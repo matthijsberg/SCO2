@@ -25,9 +25,9 @@ To be clear, the device can run alone without wifi of back-end, but when you're 
 # 3D Files
 The device exists out of 5 3D printer parts you can print on your own printer of via a service. You find the here, and assambling should be possible in one way only. :)
 
-# Hardware assambly
-Maybe i'll create a visual guide one day, but for now:
-The hardware assambly consists out of 2 part, the D1 mini in the foot of the unit, and the sensor array holding the CO2 sensor and the LEDs. I build it like this so we can create new sensor array's later on and just swap them out. 
+# Hardware assembly
+Maybe I'll create a visual guide one day, but for now:
+The hardware assembly consists out of 2 part, the D1 mini in the foot of the unit, and the sensor array holding the CO2 sensor and the LEDs. I build it like this so we can create new sensor array's later on and just swap them out. 
 
 ## ESP Board
 This is the easy part, just solder a MALE pin header strip on the board ON ONE SIDE ONLY. We're only using the side of the board with the pin headers 5V to TX. once done, use 2 small screws to screw the board in the 3D printed bottom plate.
