@@ -27,7 +27,19 @@ The device exists out of 5 3D printer parts you can print on your own printer of
 
 # Hardware assambly
 Maybe i'll create a visual guide one day, but for now:
+The hardware assambly consists out of 2 part, the D1 mini in the foot of the unit, and the sensor array holding the CO2 sensor and the LEDs. I build it like this so we can create new sensor array's later on and just swap them out. 
 
+## ESP Board
+This is the easy part, just solder a MALE pin header strip on the board ON ONE SIDE ONLY. We're only using the side of the board with the pin headers 5V to TX. once done, use 2 small screws to screw the board in the 3D printed bottom plate.
+
+## Sensor Array
+This is a bit more tricky, since we need some wire and a couple of more connections. You need to:
+
+ - 5V pin to 5V on the CO2 sensor and 5V on the LEDs
+ - GND pin to GND on the CO2 sensor and GND on the LEDs
+ - D4 on the board to D4 on the LEDs
+ - D2 on the board to SDA on the CO2 sensor
+ - D1 on the board to SCL on the CO2 sensor
 
 # Software Installation
 When you have all the parts in house en printed the enclosure make sure you have ESPHome running. For me it's part of my Home Assistant installation and for the school I build this for I have a Raspberry PI where I run HASSOS with ESP Home in. To get HASSIO running, please find the software and instructions here: https://www.home-assistant.io/installation/ . 
