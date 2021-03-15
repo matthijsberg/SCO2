@@ -1,0 +1,133 @@
+# SCO2 Project
+# Version 1.0
+# The Variables for this device are here AND in the secrets file!
+substitutions:
+  device_name_friendly: 'Sensor Name'
+  device_name: 'sensor' #DNS NAME!
+  wifi_fb_password: 'Tbs5ucnG24CMmj'
+  scd30_temp_offset: '5.7'
+#Nog changes after here required.
+
+esphome:
+  name: ${device_name}
+  platform: ESP8266
+  board: d1_mini
+  on_boot:
+    - light.turn_on:
+        id: color_leds_id
+        brightness: 65%
+        red: 0%
+        green: 0%
+        blue: 100%
+    - delay: 1s
+    - light.control:
+        id: color_leds_id
+        effect: "Rainbow Effect"
+    - delay: 10s
+    - light.control:
+        id: color_leds_id
+        effect: "none"  
+
+wifi:
+  ssid: !secret wifi_ssid_iot
+  password: !secret wifi_password_iot
+  fast_connect: true
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: '${device_name_friendly} Fallback Hotspot'
+    password: ${wifi_fb_password}
+
+captive_portal:
+
+# Example configuration entry
+debug:
+
+# Logger must be at least debug (default)
+logger:
+  level: debug
+
+web_server:
+  port: 80
+
+# Enable Home Assistant API
+api:
+  password: !secret esphome_local
+  reboot_timeout: 0s
+
+ota:
+  password: !secret esphome_local
+
+i2c:
+  sda: D2
+  scl: D1
+  scan: True
+  id: bus_a
+  frequency: 100kHz
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+sensor:
+  - platform: scd30
+    i2c_id: bus_a
+    address: 0x61
+    co2:
+      name: '${device_name_friendly} CO2'
+      #id: scd30_co2
+      accuracy_decimals: 1
+      on_value:
+        then:
+          lambda: !lambda |-
+            auto call = id(color_leds_id).turn_on();
+            static float red = 0.0;
+            static float green = 0.0;
+            static float blue = 0.0;             // x is sensor value input from ESP Home
+            static float bright = 0.65;
+            ESP_LOGD("main", "CO2 number is: %f", x);
+            if (x < 800) {
+              green = bright;
+              red = 0.0;
+              blue = 0.0;
+              ESP_LOGD("main", "CO2 < 800 loop. Green: %f, red: %f, blue: %f", green, red, blue);
+            } else if (x > 800 and x < 1500) { 
+              red = ((x -800) / 700) * bright;
+              green = (1 - ((x - 800) / 700)) * bright;
+              blue = 0.0;
+              ESP_LOGD("main", "CO2 800 - 1500 loop.. Green: %f, red: %f, blue: %f", green, red, blue);
+            } else if (x > 1500 ){ 
+              red = bright;
+              green = 0.0;
+              blue = 0.0;
+              ESP_LOGD("main", "CO2 > 1500 loop. Green: %f, red: %f, blue: %f", green, red, blue);
+            } 
+            call.set_transition_length(1000); // in ms
+            call.set_rgb(red, green, blue); // color, 1.0 is fully lit
+            call.perform();
+          # note that the logging in ESP Home debug console for RGB % is not correct, but the leds do give the right color.
+    temperature:
+      name: '${device_name_friendly} Temperature'
+      #id: scd30_temperature
+      accuracy_decimals: 1
+    humidity:
+      name: '${device_name_friendly} Humidity'
+      #id: scd30_humidity
+      accuracy_decimals: 1
+    temperature_offset: ${scd30_temp_offset}
+    update_interval: 10s
+
+light:
+  - platform: neopixelbus
+    id: color_leds_id
+    type: GRB
+    method: ESP8266_UART1
+    pin: D4
+    num_leds: 7
+    name: "${device_name_friendly} LED Light"
+    restore_mode: ALWAYS_OFF
+    effects:
+      - addressable_rainbow:
+          name: "Rainbow Effect"
+          speed: 30
+          width: 40
