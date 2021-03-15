@@ -22,14 +22,25 @@ I started out programming the thing myself in Visual code, that gives me great a
 
 To be clear, the device can run alone without wifi of back-end, but when you're up for it you can connect it and save the data in various systems. 
 
-# Installation
+# 3D Files
+The device exists out of 5 3D printer parts you can print on your own printer of via a service. You find the here, and assambling should be possible in one way only. :)
+
+# Hardware assambly
+Maybe i'll create a visual guide one day, but for now:
+
+
+# Software Installation
 When you have all the parts in house en printed the enclosure make sure you have ESPHome running. For me it's part of my Home Assistant installation and for the school I build this for I have a Raspberry PI where I run HASSOS with ESP Home in. To get HASSIO running, please find the software and instructions here: https://www.home-assistant.io/installation/ . 
 
 When you have ESPHome running as a Add-on:
  - Open the ESPHome interface
  - Connect the Device with a USB cable to your HA device
- - Open the "Secrets" File in the rop right corner to enter your passwords you will use (example in this github)
+ - Open the "Secrets" File in the rop right corner to enter your passwords you will use (example in this github calles secrets.yaml)
  - Create a new device, give it the right name straight away, but the rest of the information can be bogus IF you are using exactly the same ESP board
  - Now change the interface to upload the code to your device from over the air to the USB port (you can use OtA after inital flash)
- - Once created open the config by clicking "Edit" and past the example config from the repo into you config.
- - 
+ - Once created open the config by clicking "Edit" and past the example config from the repo into you config (sensor.yaml).
+ - check if all the password and config options are correct and upload the file with "Upload"
+ - See what happens. 
+ - You can add the sensors to HA if you want under Integrations or under Device. 
+
+Cheers! Drop me comments or improvents here in GitHub please. 
