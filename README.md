@@ -5,6 +5,8 @@ The SCO2 is a small scale personal initiative to create CO2 sensors for the scho
  - Looks good draws attention when needed
  - Solid to survive the harse school environment
  - Decent but relatively cheap to build
+
+![alt text](https://github.com/matthijsberg/SCO2/blob/main/Pictures/SCO2-sensor-001.jpg?raw=true)
  
 # First Version
 The first version is a completely home made device using some electronics, a soldering iron and a 3D printer (or an online 3D ordering service). 
