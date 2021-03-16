@@ -56,3 +56,10 @@ When you have ESPHome running as a Add-on:
  - You can add the sensors to HA if you want under Integrations or under Device. 
 
 Cheers! Drop me comments or improvents here in GitHub please. 
+
+# Thank you!
+ - Home Assistant for building great software that makes this easy to run a OS and a great Add-on ->
+ - ESPHOME! This is amazing. Next gen programming language to make IOT easy IMHO. 
+ - Autodesk for having a free edition of Fusion360
+ - Ultimaker for providing the best slicer software for free to slice the 3D design and print them.
+ 
