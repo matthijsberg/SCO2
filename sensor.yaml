@@ -1,15 +1,22 @@
 # SCO2 Project
-# Version 1.0
+# SCO2 Project
+# Version 1.1
 # The Variables for this device are here AND in the secrets file!
 substitutions:
   device_name_friendly: 'Sensor Name'
   device_name: 'sensor' #DNS NAME!
+  device_description: "SCO2 School CO2 sensor project. Batch 2. Software 1.1"
   wifi_fb_password: 'Tbs5ucnG24CMmj'
   scd30_temp_offset: '5.7'
-#Nog changes after here required.
+#No changes after here required.
+
 
 esphome:
   name: ${device_name}
+  comment: ${device_description}
+  project:
+    name: "matthijs.sco2"
+    version: "1.1.0"
   platform: ESP8266
   board: d1_mini
   on_boot:
@@ -41,11 +48,11 @@ wifi:
 captive_portal:
 
 # Example configuration entry
-debug:
+#debug:
 
-# Logger must be at least debug (default)
+# Logger (debug default)
 logger:
-  level: debug
+  level: info
 
 web_server:
   port: 80
@@ -54,6 +61,9 @@ web_server:
 api:
   password: !secret esphome_local
   reboot_timeout: 0s
+  encryption: 
+    key: !secret esphome_api_key
+  id: device_name
 
 ota:
   password: !secret esphome_local
@@ -61,13 +71,19 @@ ota:
 i2c:
   sda: D2
   scl: D1
-  scan: True
+  scan: False
   id: bus_a
   frequency: 100kHz
 
 time:
   - platform: homeassistant
-    id: homeassistant_time
+    id: esp_time
+  - platform: sntp
+    id: ntp_time
+    timezone: Europe/Amsterdam
+#
+#  - platform: homeassistant
+#    id: homeassistant_time
 
 sensor:
   - platform: scd30
@@ -116,12 +132,15 @@ sensor:
       accuracy_decimals: 1
     temperature_offset: ${scd30_temp_offset}
     update_interval: 10s
+    altitude_compensation: 2m
+    automatic_self_calibration: true
 
 light:
   - platform: neopixelbus
     id: color_leds_id
     type: GRB
     method: ESP8266_UART1
+    variant: WS2812X
     pin: D4
     num_leds: 7
     name: "${device_name_friendly} LED Light"
